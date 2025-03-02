@@ -185,7 +185,15 @@ def load_prepare_preference_datasets(cfg):
                     )
 
         combined_datasets = concatenate_datasets(split_datasets)
-        combined_datasets = combined_datasets.shuffle(seed=cfg.seed)
+        
+        # Enabling shuffle_merged_datasets flag here
+        combined_datasets = concatenate_datasets(split_datasets)
+        if len(combined_datasets) > 1:
+            if cfg.shuffle_merged_datasets:
+                print("WE ARE SHUFFLING")
+                dataset = dataset.shuffle(seed=cfg.seed)
+            else:
+                print("WE ARE NOT SHUFFLING")
 
         return combined_datasets
 
